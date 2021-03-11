@@ -1,0 +1,75 @@
+---
+# The service account, cluster roles, and cluster role binding are
+# only needed for Kubernetes with role-based access control (RBAC).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    name: ${NAMESPACE}-flux
+  name: ${NAMESPACE}-flux
+  namespace: ${NAMESPACE}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    name: ${NAMESPACE}-flux
+  name: ${NAMESPACE}-flux
+rules:
+  - apiGroups: ['']
+    resources: ['']
+    verbs: ['']
+  - nonResourceURLs: ['']
+    verbs: ['']
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    name: ${NAMESPACE}-flux
+  name: ${NAMESPACE}-flux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ${NAMESPACE}-flux
+subjects:
+  - kind: ServiceAccount
+    name: ${NAMESPACE}-flux
+    namespace: ${NAMESPACE}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ${NAMESPACE}-flux-discovery
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:discovery
+subjects:
+- kind: ServiceAccount
+  name: ${NAMESPACE}-flux
+  namespace: ${NAMESPACE}
+---
+  apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ${NAMESPACE}-flux
+  namespace: ${NAMESPACE}
+rules:
+- apiGroups: ['*']
+  resources: ['*']
+  verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ${NAMESPACE}-flux
+  namespace: ${NAMESPACE}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ${NAMESPACE}-flux
+subjects:
+- kind: ServiceAccount
+  name: ${NAMESPACE}-flux
+  namespace: ${NAMESPACE}

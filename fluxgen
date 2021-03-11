@@ -1,0 +1,32 @@
+#!/bin/bash
+
+while getopts 'n:r:u:p:b:l:' opt; do 
+case ${opt} in
+  n )
+    export NAMESPACE=$OPTARG
+    ;;
+  r )
+    export GIT_REPO=$OPTARG
+    ;;
+  u )
+    export GIT_USER=$OPTARG
+    ;;
+  p )
+    export GIT_PASS=$OPTARG
+    ;;
+  b )
+    export GIT_BRANCH=$OPTARG
+    ;;
+  l )
+    export GIT_PATH=$OPTARG
+    ;;
+  \? )
+    echo "Invalid option: $OPTARG" 1>&2
+    ;;
+  : )
+    echo "Invalid option: $OPTARG requires an argument" 1>&2
+    ;;
+esac
+done
+
+cat k8s/*.yaml | envsubst
