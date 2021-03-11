@@ -2,13 +2,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  ${NAMESPACE}-flux
+  name: flux
   namespace: ${NAMESPACE}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      ${NAMESPACE}-flux
+      name: flux
   strategy:
     type: Recreate
   template:
@@ -16,11 +16,11 @@ spec:
       annotations:
         prometheus.io/port: "3031" # tell prometheus to scrape /metrics endpoint's port.
       labels:
-        ${NAMESPACE}-flux
+        name: flux
     spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
-      serviceAccountName: ${NAMESPACE}-flux
+      serviceAccountName: flux
       volumes:
       - name: git-key
         secret:
@@ -41,7 +41,7 @@ spec:
       # https://docs.fluxcd.io/en/latest/guides/use-private-git-host
       # - name: ssh-config
       #   configMap:
-      #     ${NAMESPACE}-flux-ssh-config
+      #     name: flux-ssh-config
 
       # The following volume is for using a customised .kube/config,
       # which you will need to do if you wish to have a different
@@ -50,7 +50,7 @@ spec:
       # env entries below.
       # - name: kubeconfig
       #   configMap:
-      #     ${NAMESPACE}-flux-kubeconfig
+      #     name: flux-kubeconfig
 
       # The following volume is used to import GPG keys (for signing
       # and verification purposes). You will also need to provide the
@@ -62,7 +62,7 @@ spec:
       #     defaultMode: 0400
 
       containers:
-      - ${NAMESPACE}-flux
+      - name: flux
         # There are no ":latest" images for flux. Find the most recent
         # release or image version at https://hub.docker.com/r/fluxcd/flux/tags
         # and replace the tag here.
@@ -122,7 +122,7 @@ spec:
         # secret.
         # envFrom:
         # - secretRef:
-        #     ${NAMESPACE}-flux-git-auth
+        #     name: flux-git-auth
 
         args:
 

@@ -50,7 +50,7 @@ subjects:
   name: ${NAMESPACE}-flux
   namespace: ${NAMESPACE}
 ---
-  apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: ${NAMESPACE}-flux
