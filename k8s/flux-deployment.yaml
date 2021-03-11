@@ -20,7 +20,7 @@ spec:
     spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
-      serviceAccountName: flux
+      serviceAccountName: ${NAMESPACE}-flux
       volumes:
       - name: git-key
         secret:
