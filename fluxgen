@@ -8,7 +8,7 @@ usage() {
   echo "  -p git-password       the password (or token) to authenticate with"
   echo "  -b git-branch         (optional) the git branch to use (default=master)"
   echo "  -d git-path           (optional) the path within the repo in which to look for manifest (default=)"
-  echo "  -i git-poll-interval  (optional) the frequency with which to poll the git repository for changes (default=5m)"
+  echo "  -i sync-interval      (optional) the frequency with which to poll for, and apply, changes (default=5m)"
   exit 1
 }
 
@@ -37,7 +37,7 @@ while getopts ':n:r:u:p:b:d:i:' opt; do
       export GIT_PATH=$OPTARG
       ;;
     i )
-      export GIT_POLL_INTERVAL=$OPTARG
+      export SYNC_INTERVAL=$OPTARG
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -57,6 +57,6 @@ fi
 
 export GIT_BRANCH=${GIT_BRANCH:-master}
 export GIT_PATH=${GIT_PATH:-}
-export GIT_POLL_INTERVAL=${GIT_POLL_INTERVAL:-5m}
+export SYNC_INTERVAL=${SYNC_INTERVAL:-5m}
 
 cat k8s/*.yaml | envsubst

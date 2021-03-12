@@ -148,7 +148,8 @@ spec:
         - --git-label=flux-${NAMESPACE}
         - --git-user=Flux
         - --git-email=flux
-        - --git-poll-interval=${GIT_POLL_INTERVAL}
+        - --git-poll-interval=${SYNC_INTERVAL}
+        - --sync-interval=${SYNC_INTERVAL}
         - --k8s-default-namespace=${NAMESPACE}
         - --sync-garbage-collection
         - --git-ci-skip
