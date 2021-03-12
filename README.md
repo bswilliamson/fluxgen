@@ -2,7 +2,7 @@ A simple script to generate (flux v1)[https://docs.fluxcd.io/en/1.21.2/] manifes
 
 # Quick start
 ```
-git clone https://github.com/bwilliamson/fluxgen # clone the repo
+git clone https://github.com/bswilliamson/fluxgen # clone the repo
 cd fluxgen
 ./fluxgen -n your-namespace > flux.yml           # generate the manifest
 vim flux.yml                                     # add git URL, branch and user to flux deployment arguments
@@ -14,7 +14,7 @@ kubectl apply -f flux.yml
 Clone the repository and `cd` in to the directory.
 
 ```
-git clone https://github.com/bwilliamson/fluxgen
+git clone https://github.com/bswilliamson/fluxgen
 cd fluxgen
 ```
 
