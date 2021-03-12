@@ -2,13 +2,7 @@
 
 usage() {
   echo "arguments:"
-  echo "  -n namespace          the namespace that flux will be deployed into. Also the namespace flux will deploy to by default."
-  echo "  -r git-repository     the git repository containing kubernetes manifests, e.g. example.com/my-repo.git"
-  echo "  -u git-user           the user to clone the repository with. This user need write access if you want the sync state to work."
-  echo "  -p git-password       the password (or token) to authenticate with"
-  echo "  -b git-branch         (optional) the git branch to use (default=master)"
-  echo "  -d git-path           (optional) the path within the repo in which to look for manifest (default=)"
-  echo "  -i sync-interval      (optional) the frequency with which to poll for, and apply, changes (default=5m)"
+  echo "  -n namespace  the namespace that flux will be deployed into. Also the namespace flux will deploy to by default."
   exit 1
 }
 
@@ -16,28 +10,10 @@ if (( $# == 0 )); then
   usage
 fi
 
-while getopts ':n:r:u:p:b:d:i:' opt; do 
+while getopts ':n:' opt; do 
   case ${opt} in
     n )
       export NAMESPACE=$OPTARG
-      ;;
-    r )
-      export GIT_REPO=$OPTARG
-      ;;
-    u )
-      export GIT_USER=$OPTARG
-      ;;
-    p )
-      export GIT_PASS=$OPTARG
-      ;;
-    b )
-      export GIT_BRANCH=$OPTARG
-      ;;
-    d )
-      export GIT_PATH=$OPTARG
-      ;;
-    i )
-      export SYNC_INTERVAL=$OPTARG
       ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
@@ -50,13 +26,9 @@ while getopts ':n:r:u:p:b:d:i:' opt; do
   esac
 done
 
-if [ -z "$NAMESPACE" ] || [ -z "$GIT_REPO" ] || [ -z "$GIT_USER" ] || [ -z "$GIT_PASS" ]; then
+if [ -z "$NAMESPACE" ]; then
   echo "error: missing arg"
   usage
 fi
-
-export GIT_BRANCH=${GIT_BRANCH:-master}
-export GIT_PATH=${GIT_PATH:-}
-export SYNC_INTERVAL=${SYNC_INTERVAL:-5m}
 
 cat k8s/*.yaml | envsubst
