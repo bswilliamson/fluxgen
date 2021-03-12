@@ -16,7 +16,7 @@ if (( $# == 0 )); then
   usage
 fi
 
-while getopts ':n:r:u:p:b:d:' opt; do 
+while getopts ':n:r:u:p:b:d:i:' opt; do 
   case ${opt} in
     n )
       export NAMESPACE=$OPTARG
