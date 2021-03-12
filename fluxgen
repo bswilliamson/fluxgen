@@ -1,7 +1,14 @@
 #!/bin/bash
 
 usage() {
-  echo "usage: $(basename $0) -n namespace -r repository -u git-user -p git-password -b git-branch -d git-path"
+  echo "arguments:"
+  echo "  -n namespace          the namespace that flux will be deployed into. Also the namespace flux will deploy to by default."
+  echo "  -r git-repository     the git repository containing kubernetes manifests, e.g. example.com/my-repo.git"
+  echo "  -u git-user           the user to clone the repository with. This user need write access if you want the sync state to work."
+  echo "  -p git-password       the password (or token) to authenticate with"
+  echo "  -b git-branch         (optional) the git branch to use (default=master)"
+  echo "  -d git-path           (optional) the path within the repo in which to look for manifest (default=)"
+  echo "  -i git-poll-interval  (optional) the frequency with which to poll the git repository for changes (default=5m)"
   exit 1
 }
 
@@ -29,6 +36,9 @@ while getopts ':n:r:u:p:b:d:' opt; do
     d )
       export GIT_PATH=$OPTARG
       ;;
+    i )
+      export GIT_POLL_INTERVAL=$OPTARG
+      ;;
     \? )
       echo "Invalid option: $OPTARG" 1>&2
       exit 1
@@ -39,5 +49,14 @@ while getopts ':n:r:u:p:b:d:' opt; do
       ;;
   esac
 done
+
+if [ -z "$NAMESPACE" ] || [ -z "$GIT_REPO" ] || [ -z "$GIT_USER" ] || [ -z "$GIT_PASS" ]; then
+  echo "error: missing arg"
+  usage
+fi
+
+export GIT_BRANCH=${GIT_BRANCH:-master}
+export GIT_PATH=${GIT_PATH:-}
+export GIT_POLL_INTERVAL=${GIT_POLL_INTERVAL:-5m}
 
 cat k8s/*.yaml | envsubst
