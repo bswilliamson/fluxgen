@@ -24,7 +24,7 @@ Run the `fluxgen` script, providing the namespace that you want flux to be deplo
 ./fluxgen -n your-namespace > flux.yml
 ```
 
-Edit the the [flux daemon](https://docs.fluxcd.io/en/1.21.2/references/daemon/) arguments in the flux deployment manifest you just generated using your preferred editor. You need to add the `--git-url` (which must contain the credentials flux will) but the remainder of the options can be left as-is or adjusted as required.
+Edit the the [flux daemon](https://docs.fluxcd.io/en/1.21.2/references/daemon/) arguments in the flux deployment manifest you just generated using your preferred editor. You need to add the `--git-url` (which must include the credentials flux will use) but the remainder of the options can be left as-is or adjusted as required.
 
 Finally use `kubectl` to apply the manifest.
 ```
